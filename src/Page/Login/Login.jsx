@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { FcGoogle } from 'react-icons/fc'
 import { useContext, useRef } from 'react'
@@ -9,6 +9,8 @@ import { TbFidgetSpinner } from 'react-icons/tb'
 const Login = () => {
     const { resetPassword, signInWithGoogle, signIn, setLoading, loading, } = useContext(AuthContext)
     const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || '/';
     const emailRef = useRef()
 
     const handleSubmit = event => {
@@ -19,7 +21,7 @@ const Login = () => {
         signIn(email, password)
             .then(result => {
                 console.log(result.user);
-                navigate('/')
+                navigate(from, {replace: true})
             })
             .catch(err => {
                 setLoading(false)
@@ -43,7 +45,7 @@ const Login = () => {
         signInWithGoogle()
             .then(result => {
                 console.log(result.user);
-                navigate('/')
+                navigate(from, {replace: true})
             })
             .catch(err => {
                 setLoading(false)
@@ -128,7 +130,7 @@ const Login = () => {
                 <p className='px-6 text-sm text-center text-gray-400'>
                     Don't have an account yet?{' '}
                     <Link
-                        to='/signup'
+                        to='/signUp'
                         className='hover:underline hover:text-rose-500 text-gray-600'
                     >
                         Sign up
